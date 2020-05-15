@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SwaggApp</string>
+    <string name="random_btn_text">Random Faction</string>
+</resources>
