@@ -10,7 +10,7 @@ class RandomFaction : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_random_faction)
         random_faction_btn.setOnClickListener {
-            faction_name_field.text = randomFaction()
+            faction_text.text = randomFaction()
         }
     }
 
