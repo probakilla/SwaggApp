@@ -11,7 +11,7 @@ Java_com_pella_swaggapp_MainActivity_stringFromJNI(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_pella_swaggapp_MainActivity_randomFaction(JNIEnv * env, jobject /* this */) {
+Java_com_pella_swaggapp_RandomFaction_randomFaction(JNIEnv * env, jobject /* this */) {
     const char * faction = get_random_faction();
     return env->NewStringUTF(faction);
 }
