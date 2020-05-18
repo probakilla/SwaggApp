@@ -27,6 +27,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="328dp"
         android:layout_height="78dp"
+        android:alpha="0.69"
         android:background="@drawable/faction_container"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
