@@ -10,19 +10,25 @@ class RandomFaction : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_random_faction)
         random_faction_btn.setOnClickListener {
-            val factionName = randomFaction()
+            val factionName = getRandomFaction()
             faction_text.text = factionName
             backgroundMap(factionName)
         }
     }
 
-    private external fun randomFaction(): String
-
-    companion object {
-        // Used to load the 'native-lib' library on application startup.
-        init {
-            System.loadLibrary("native-lib")
-        }
+    private fun getRandomFaction(): String {
+        val list = listOf(
+            "Eldars",
+            "Tau",
+            "Imperial Guard",
+            "Orks",
+            "Space Marines",
+            "Necrons",
+            "Sisters of battle",
+            "Dark eldars",
+            "Chaos"
+        )
+        return list.random()
     }
 
     private fun backgroundMap(factionName: String) {
