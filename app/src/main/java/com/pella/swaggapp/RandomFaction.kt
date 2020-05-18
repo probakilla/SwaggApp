@@ -10,7 +10,9 @@ class RandomFaction : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_random_faction)
         random_faction_btn.setOnClickListener {
-            faction_text.text = randomFaction()
+            val factionName = randomFaction()
+            faction_text.text = factionName
+            backgroundMap(factionName)
         }
     }
 
@@ -21,5 +23,20 @@ class RandomFaction : AppCompatActivity() {
         init {
             System.loadLibrary("native-lib")
         }
+    }
+
+    private fun backgroundMap(factionName: String) {
+        val map: Map<String, () -> Unit> = mapOf(
+            "Eldars" to { faction_layout.setBackgroundResource(R.drawable.faction_eldars) },
+            "Tau" to { faction_layout.setBackgroundResource(R.drawable.faction_tau) },
+            "Imperial Guard" to { faction_layout.setBackgroundResource(R.drawable.faction_imperial_guard) },
+            "Orks" to { faction_layout.setBackgroundResource(R.drawable.faction_orks) },
+            "Space Marines" to { faction_layout.setBackgroundResource(R.drawable.faction_space_marines) },
+            "Necrons" to { faction_layout.setBackgroundResource(R.drawable.faction_necrons) },
+            "Sisters of battle" to { faction_layout.setBackgroundResource(R.drawable.faction_sisters) },
+            "Dark eldars" to { faction_layout.setBackgroundResource(R.drawable.faction_dark_eldar) },
+            "Chaos" to { faction_layout.setBackgroundResource(R.drawable.faction_chaos) }
+        )
+        map[factionName]?.invoke()
     }
 }
