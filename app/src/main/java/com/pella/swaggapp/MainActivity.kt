@@ -2,8 +2,8 @@ package com.pella.swaggapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,9 +11,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val randomBtn = findViewById<Button>(R.id.goto_random_faction)
-        randomBtn.setOnClickListener {
-            val intent = Intent(this, RandomFaction::class.java)
+        goto_random_faction.setOnClickListener {
+            startActivity(Intent(this, RandomFaction::class.java))
+        }
+        goto_one_piece_btn.setOnClickListener {
+            val intent = OnePieceScans.getScanIntent(this, "974", 0)
             startActivity(intent)
         }
     }
