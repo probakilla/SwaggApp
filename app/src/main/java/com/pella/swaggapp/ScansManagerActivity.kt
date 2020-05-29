@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.pella.swaggapp.onepiece_scans.ScansFileManager
 import kotlinx.android.synthetic.main.activity_scans_manager.*
 
-class ScansManager : AppCompatActivity() {
+class ScansManagerActivity : AppCompatActivity() {
     private lateinit var _fileManager: ScansFileManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,14 +29,15 @@ class ScansManager : AppCompatActivity() {
     private fun bindButton() {
         scanBtn.setOnClickListener {
             addChapter()
+            initList(_fileManager.getChapters())
         }
     }
 
     private fun addChapter() {
         val chapter = scanInput.text.toString()
-        println(chapter)
         _fileManager.addChapter(chapter.toInt())
-        initList(_fileManager.getChapters())
+        val intent = ScanReadingActivity.getScanIntent(this, chapter)
+        startActivity(intent)
     }
 
     private fun initList(chapterList: MutableList<Int>) {
@@ -45,7 +46,7 @@ class ScansManager : AppCompatActivity() {
         scanListView.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 val itemValue = scanListView.getItemAtPosition(position) as Int
-                val builder = AlertDialog.Builder(this@ScansManager)
+                val builder = AlertDialog.Builder(this@ScansManagerActivity)
                 builder.setMessage("Delete $itemValue ?")
                     .setCancelable(false)
                     .setPositiveButton("Yes") { _, _ ->

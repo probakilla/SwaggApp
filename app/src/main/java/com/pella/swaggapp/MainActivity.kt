@@ -12,10 +12,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         goto_random_faction.setOnClickListener {
-            startActivity(Intent(this, RandomFaction::class.java))
+            startActivity(Intent(this, RandomFactionActivity::class.java))
         }
         goto_one_piece_btn.setOnClickListener {
-            startActivity(Intent(this, ScansManager::class.java))
+            startActivity(Intent(this, ScansManagerActivity::class.java))
         }
     }
 }

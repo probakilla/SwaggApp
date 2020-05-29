@@ -13,10 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ScansManager" />
-        <activity android:name=".OnePieceScans" />
+        <activity android:name=".ScansManagerActivity" />
+        <activity android:name=".ScanReadingActivity" />
         <activity
-            android:name=".RandomFaction"
+            android:name=".RandomFactionActivity"
             android:label="@string/title_activity_random_faction"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">

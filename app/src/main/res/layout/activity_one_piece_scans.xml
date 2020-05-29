@@ -5,7 +5,7 @@
     android:id="@+id/OnePieceScanLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OnePieceScans">
+    tools:context=".ScanReadingActivity">
 
     <com.pella.swaggapp.onepiece_scans.CustomImageView
         android:id="@+id/scanContainer"

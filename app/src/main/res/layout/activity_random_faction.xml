@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/applicationBackgroundColor"
-    tools:context=".RandomFaction">
+    tools:context=".RandomFactionActivity">
 
     <Button
         android:id="@+id/random_faction_btn"

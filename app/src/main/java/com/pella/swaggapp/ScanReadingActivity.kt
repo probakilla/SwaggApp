@@ -9,10 +9,10 @@ import kotlinx.android.synthetic.main.activity_one_piece_scans.*
 import okhttp3.*
 import java.io.IOException
 
-class OnePieceScans : AppCompatActivity() {
+class ScanReadingActivity : AppCompatActivity() {
 
-    private var scanNumber: String? = ""
-    private var imageNumber: Int = 0
+    private var _scanNumber: String? = ""
+    private var _imageNumber: Int = 0
     private val BASE_URL: String = "http://lelscano.com/mangas/one-piece/"
 
     private val okClient by lazy {
@@ -37,22 +37,22 @@ class OnePieceScans : AppCompatActivity() {
     }
 
     private fun initActivity() {
-        scanNumber = intent.getStringExtra("scannumber")
-        imageNumber = intent.getIntExtra("imagenumber", 0)
+        _scanNumber = intent.getStringExtra("scannumber")
+        _imageNumber = intent.getIntExtra("imagenumber", 0)
         updateDisplay()
     }
 
     private fun updateDisplay() {
-        scanNumberText.text = scanNumber
-        imageNumberText.text = imageNumber.toString()
+        scanNumberText.text = _scanNumber
+        imageNumberText.text = _imageNumber.toString()
     }
 
     private fun getScanUrl(): String {
-        return "$BASE_URL$scanNumber/${convertImageNumber()}.jpg"
+        return "$BASE_URL$_scanNumber/${convertImageNumber()}.jpg"
     }
 
     private fun convertImageNumber(): String {
-        return if (imageNumber < 10) "0$imageNumber" else "$imageNumber"
+        return if (_imageNumber < 10) "0$_imageNumber" else "$_imageNumber"
     }
 
     private fun loadImage() {
@@ -81,24 +81,24 @@ class OnePieceScans : AppCompatActivity() {
     }
 
     private fun nextImage() {
-        imageNumber += 1
+        _imageNumber += 1
         updateDisplay()
         loadImage()
     }
 
     private fun previousImage() {
-        if (imageNumber > 0) {
-            imageNumber -= 1
+        if (_imageNumber > 0) {
+            _imageNumber -= 1
             updateDisplay()
             loadImage()
         }
     }
 
     companion object {
-        fun getScanIntent(context: Context, scanNum: String, imageNum: Int): Intent {
-            val intent = Intent(context, OnePieceScans::class.java)
+        fun getScanIntent(context: Context, scanNum: String, imageNum: Int = 0): Intent {
+            val intent = Intent(context, ScanReadingActivity::class.java)
             intent.putExtra("scannumber", scanNum)
-            intent.putExtra("inagemunber", imageNum)
+            intent.putExtra("imagenumber", imageNum)
             return intent
         }
     }
