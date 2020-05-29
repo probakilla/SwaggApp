@@ -15,8 +15,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, RandomFaction::class.java))
         }
         goto_one_piece_btn.setOnClickListener {
-            val intent = OnePieceScans.getScanIntent(this, "974", 0)
-            startActivity(intent)
+            startActivity(Intent(this, ScansManager::class.java))
         }
     }
 }

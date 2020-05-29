@@ -15,4 +15,8 @@
     <string name="one_piece_scans">One Piece Scans</string>
     <string name="scan_container">Scan container</string>
     <string name="prev">Prev</string>
+    <string name="enter_scan_number">Enter scan number</string>
+    <string name="go">GO</string>
+    <string name="scan_list">Scan List</string>
+    <string name="display_text">Display Text</string>
 </resources>

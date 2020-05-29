@@ -24,6 +24,16 @@ class OnePieceScans : AppCompatActivity() {
         setContentView(R.layout.activity_one_piece_scans)
         initActivity()
         loadImage()
+        assignButtons()
+    }
+
+    private fun assignButtons() {
+        nextBtn.setOnClickListener {
+            nextImage()
+        }
+        prevBtn.setOnClickListener {
+            previousImage()
+        }
     }
 
     private fun initActivity() {
