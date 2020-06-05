@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.text.Editable
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_one_piece_scans.*
 import okhttp3.*
@@ -25,6 +29,7 @@ class ScanReadingActivity : AppCompatActivity() {
         initActivity()
         loadImage()
         assignButtons()
+        assignEditTexts()
     }
 
     private fun assignButtons() {
@@ -36,6 +41,21 @@ class ScanReadingActivity : AppCompatActivity() {
         }
     }
 
+    private fun assignEditTexts() {
+        imageNumberText.setOnKeyListener(View.OnKeyListener { v, keycode, event ->
+            if (keycode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                if (currentFocus != null) {
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+                }
+                val chapter = imageNumberText.text.toString().toInt()
+                setImage(chapter)
+                return@OnKeyListener true
+            }
+            false
+        })
+    }
+
     private fun initActivity() {
         _scanNumber = intent.getStringExtra("scannumber")
         _imageNumber = intent.getIntExtra("imagenumber", 0)
@@ -44,8 +64,11 @@ class ScanReadingActivity : AppCompatActivity() {
 
     private fun updateDisplay() {
         scanNumberText.text = _scanNumber
-        imageNumberText.text = _imageNumber.toString()
+        imageNumberText.text = _imageNumber.toEditable()
     }
+
+    private fun Int.toEditable(): Editable =
+        Editable.Factory.getInstance().newEditable(this.toString())
 
     private fun getScanUrl(): String {
         return "$BASE_URL$_scanNumber/${convertImageNumber()}.jpg"
@@ -92,6 +115,12 @@ class ScanReadingActivity : AppCompatActivity() {
             updateDisplay()
             loadImage()
         }
+    }
+
+    private fun setImage(number: Int) {
+        _imageNumber = number
+        updateDisplay()
+        loadImage()
     }
 
     companion object {

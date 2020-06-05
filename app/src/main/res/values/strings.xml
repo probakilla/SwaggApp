@@ -19,4 +19,5 @@
     <string name="go">GO</string>
     <string name="scan_list">Scan List</string>
     <string name="display_text">Display Text</string>
+    <string name="n">N°</string>
 </resources>
