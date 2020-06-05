@@ -1,60 +1,59 @@
 package com.pella.swaggapp.onepiece_scans
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import java.io.File
-import java.io.FileWriter
-import java.io.IOException
+
+@Serializable
+data class Scans(var scanList: MutableList<Int> = mutableListOf())
 
 class ScansFileManager(filename: String) {
     private val _filename: String = filename
+    private val _json: Json = Json(JsonConfiguration.Stable)
 
     init {
         File(_filename).createNewFile()
+        if (isFileEmpty()) {
+            saveScans(Scans())
+        }
+    }
+
+    private fun isFileEmpty(): Boolean {
+        val file = File(_filename)
+        if (file.isFile) {
+            val size = file.length()
+            return size == 0L
+        }
+        return true
+    }
+
+    private fun saveScans(scans: Scans) {
+        val jsonData = _json.stringify(Scans.serializer(), scans)
+        File(_filename).writeText(jsonData)
     }
 
     fun addChapter(chapter: Int) {
-        if (!isAlreadyRegistered(chapter)) {
-            val path = _filename
-            val text = "$chapter${System.lineSeparator()}"
-            try {
-                val fileWriter = FileWriter(path, true)
-                fileWriter.write(text)
-                fileWriter.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+        val scans = getFileContent()
+        if (!scans.scanList.contains(chapter)) {
+            scans.scanList.add(chapter)
+            saveScans(scans)
         }
     }
 
     fun getChapters(): MutableList<Int> {
-        val content = File(_filename).readText()
-        val list: List<String> = content.split(System.lineSeparator()).map { it.trim() }
-        val scanList = list.filter { it != "" }
-        val chapters = scanList.map { el -> el.toInt() }
-        return chapters.sortedDescending().toMutableList()
+        val scans = getFileContent()
+        return scans.scanList
     }
 
-    private fun isAlreadyRegistered(chapter: Int): Boolean {
+    private fun getFileContent(): Scans {
         val content = File(_filename).readText()
-        val regex = "^$chapter".toRegex()
-        return (content.contains(regex))
+        return _json.parse(Scans.serializer(), content)
     }
 
     fun deleteChapter(chapter: Int) {
-        val content = File(_filename).readText()
-        val newContent = content.replace("$chapter${System.lineSeparator()}", "")
-        File(_filename).writeText(newContent)
-        cleanContent()
-    }
-
-    private fun cleanContent() {
-        val content = File(_filename).readText()
-        val chaptersListStr = content.split(System.lineSeparator()).map { it.trim() }
-        val filteredList = chaptersListStr.filter { it != "" }
-        val cleanedContent = filteredList.joinToString(System.lineSeparator())
-        File(_filename).writeText(cleanedContent)
-    }
-
-    fun printFile() {
-        File(_filename).forEachLine { println(it) }
+        val scans = getFileContent()
+        scans.scanList.remove(chapter)
+        saveScans(scans)
     }
 }
