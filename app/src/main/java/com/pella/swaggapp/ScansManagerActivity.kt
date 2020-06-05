@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.pella.swaggapp.onepiece_scans.InfoFetcher
 import com.pella.swaggapp.onepiece_scans.ScansFileManager
 import kotlinx.android.synthetic.main.activity_scans_manager.*
 
@@ -17,7 +18,9 @@ class ScansManagerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scans_manager)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         initFileManager()
-        bindButton()
+        initSpinner()
+        bindFieldButton()
+        bindSpinnerButton()
         initList(_fileManager.getChapters())
     }
 
@@ -26,15 +29,35 @@ class ScansManagerActivity : AppCompatActivity() {
         _fileManager = ScansFileManager(filename)
     }
 
-    private fun bindButton() {
+    private fun initSpinner() {
+        Thread {
+            val chapters = InfoFetcher().getLastChapters()
+            runOnUiThread {
+                val adapter =
+                    ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, chapters)
+                adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+                scanSpinner.adapter = adapter
+            }
+        }.start()
+    }
+
+    private fun bindFieldButton() {
         scanBtn.setOnClickListener {
-            addChapter()
+            val chapter = scanInput.text.toString()
+            addChapter(chapter)
             initList(_fileManager.getChapters())
         }
     }
 
-    private fun addChapter() {
-        val chapter = scanInput.text.toString()
+    private fun bindSpinnerButton() {
+        scanSpinnerBtn.setOnClickListener {
+            val chapter = scanSpinner.selectedItem.toString()
+            addChapter(chapter)
+            initList(_fileManager.getChapters())
+        }
+    }
+
+    private fun addChapter(chapter: String) {
         _fileManager.addChapter(chapter.toInt())
         val intent = ScanReadingActivity.getScanIntent(this, chapter)
         startActivity(intent)
